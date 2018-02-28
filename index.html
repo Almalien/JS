@@ -1,0 +1,181 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>Game</title>
+  </head>
+  <style media="screen">
+    body{
+      background-image: url("img/background.jpg");
+      background-size: cover;
+      background-repeat: no-repeat;
+  
+    }
+    #p1,#p2{
+      text-align: center;
+    }
+    #p1{
+      color: #013d1f;     
+      text-shadow: 2px 1px 1px white;
+    }
+    #p2{
+      color: #1e0c7a;           
+      text-shadow: 2px 1px 1px white;
+      
+    }
+
+    .circle-button{
+      margin: 60px auto;
+      width: 250px;
+      height: 250px;
+      background-color: blue;
+      border-radius: 100%;
+      box-shadow: 0 10px 10px rgba(0,0,0,.5);
+    }
+
+    .circle-button:active{
+      background-color: darkblue;
+    }
+    .clicks{
+      text-align: center;
+    }
+    .Reloj{
+      text-align: center;
+      color: black;
+      text-shadow: 2px 1px 1px white;
+    }
+    
+      .health-bar {
+      -webkit-box-sizing: border-box;
+      -moz-box-sizing: border-box;
+      box-sizing: border-box;
+      width: 200px;
+      height: 20px;
+      padding: 5px;
+      background: #ddd;
+      -webkit-border-radius: 5px;
+      -moz-border-radius: 5px;
+      border-radius: 5px;
+      position: relative;
+      }
+
+      .bar {
+        background: #c54;
+        width: 100%;
+        height: 10px;
+        position: relative;
+        
+        transition: width .5s linear;
+      }
+
+      .hit {
+      background: rgba(255,255,255,0.6);
+      position: absolute;
+      top: 0;
+      right: 0;
+      bottom: 0;
+      width: 0px;
+      
+      transition: width .5s linear;
+    }
+
+  </style>
+  <body onkeyup="key(event)">
+      <div class="health-bar" data-total="1000" data-value="1000">
+          <div class="bar">
+              <div class="hit"></div>
+          </div>
+        </div>
+    <h1 id="p1">Jugador 1  </h1>
+    <h1 id="cont1" class="clicks">0</h1>
+    <h1 id="p2">Jugador 2  </h1>
+    <h1 id="cont2" class="clicks">0</h1>
+    <h1 id="reloj" class="Reloj">00:15</h1>
+    <h1 id="finalp1"> </h1>
+    <h1 id="finalp2"> </h1>
+    <audio id="audio" src="media/audio_bg.mp3" >
+    </audio>
+    <script type="text/javascript">
+      var flag = false;
+      var p1active =true;
+      var p2active=false;
+      var cantClicks_1P = 0, cantClicks_2P = 0, time = 15, key1 = 97, key2 = 108;
+      var name1, name2;
+
+      name1 = prompt("Ingrese nombre del jugador 1");
+      name2 = prompt("Ingrese nombre del jugador 2");
+      document.getElementById("p1").innerHTML=name1+" (A)";
+      document.getElementById("p2").innerHTML=name2+ "(L)";
+
+
+      function key(event){
+        if(!flag){
+          flag=true;
+          startClock();
+        }
+
+        if (time>0)
+          {
+            if(event.keyCode == 65){
+              cantClicks_1P++;
+              document.getElementById("cont1").innerHTML = cantClicks_1P;
+            }
+
+            if(event.keyCode == 76){
+              cantClicks_2P++;
+              document.getElementById("cont2").innerHTML = cantClicks_2P;
+            }
+
+          }
+        //console.log(event.keyCode);
+
+      }
+
+      function clicks(){
+        if(!flag){
+          flag=true;
+          startClock();
+        }
+        if(time>0 && p1active)
+        {
+          cantClicks_1P++;
+          document.getElementById("contador").innerHTML = "Clicks: " + cantClicks_1P;
+        }
+        else if(time>0)
+        {
+          cantClicks_2P++;
+          document.getElementById("contador").innerHTML = "Clicks: " + cantClicks_2P;
+        }
+
+      }
+
+      function startClock(){
+        document.getElementById("audio").play();
+        var timeSet = setInterval(function(){
+          if(time > 0) {
+            time--;
+            document.getElementById("reloj").innerHTML = "00:"+time;
+          } else {
+            clearInterval(timeSet);
+          //  time = 15;
+
+
+
+
+                document.getElementById("finalp1").innerHTML ="La puntuación de "+name1+" es: "+ cantClicks_1P;
+                document.getElementById("finalp2").innerHTML ="La puntuación de "+name2+  " es: "+ cantClicks_2P;
+
+              alert( cantClicks_1P === cantClicks_2P? "Empate":( (cantClicks_1P>cantClicks_2P? name1:name2)+" gana"));
+              document.getElementById("audio").pause();
+
+
+          //  p2active=true;
+            //alert("Termino tiempo del jugador");
+          }
+          }, 1000);
+
+
+      }
+    </script>
+  </body>
+</html>
